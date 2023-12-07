@@ -1,25 +1,43 @@
-import logo from './logo.svg';
+//App.js
 import './App.css';
+import React , {useState} from 'react';
+import Task from './Task';
+import FormAdd from './FormAdd';
 
-function App() {
+function App(){
+  const [tasks,setTasks]=useState([]);
+
+  const addTask=(newTask)=>{
+    setTasks([... tasks,{text: newTask,completed: false}]);
+  };
+
+  const removeTask=(index)=>{
+    const newTasks=[...tasks];
+    newTasks.splice(index,1);
+    setTasks(newTasks);
+};
+
+  const markCompleted=(index)=>{
+    const newTasks=[... tasks];
+    newTasks[index].completed=!newTasks[index].completed;
+    setTasks(newTasks);
+};
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <h1> My To-Do List </h1>
+      {tasks.map((task, index) => (
+        <Task
+          key={index}
+          text={task.text}
+          completed={task.completed}
+          onRemove={()=>removeTask(index)}
+          onMarkCompleted={()=>markCompleted(index)}
+        />
+)) }
+      < FormAdd onAdd={addTask} />
     </div>
-  );
+);
 }
 
 export default App;
